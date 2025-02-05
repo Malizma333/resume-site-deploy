@@ -15,8 +15,8 @@ async function getApplications() {
         },
     });
     await client.connect();
-    // Replace 'yourDbName' with your actual database name.
     const apps = await client.db("main").collection("applications").find({}).toArray();
+    const resumes = await client.db("resume"); // Fix this later
     await client.close();
     return apps;
 }
@@ -30,6 +30,7 @@ export default async function ApplicationsPage() {
                 <Table className="min-w-full divide-y divide-gray-300">
                     <TableHeader className="bg-gray-50">
                         <TableRow>
+                            <TableHead className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase">ID</TableHead>
                             <TableHead className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase">Name</TableHead>
                             <TableHead className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase">Email</TableHead>
                             <TableHead className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase">University</TableHead>
@@ -38,12 +39,14 @@ export default async function ApplicationsPage() {
                         </TableRow>
                     </TableHeader>
                     <TableBody className="bg-white divide-y divide-gray-200">
-                        {applications.map((app: any) => (
+                        {applications.map((app: any, index: number) => (
                             <TableRow key={app._id} className="hover:bg-gray-50">
+                                <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{index + 1}</TableCell>
                                 <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{app.first_name + " " + app.last_name}</TableCell>
                                 <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{app.email}</TableCell>
                                 <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{app.education[0].school_name}</TableCell>
-                                <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{app.education[0].end_date ? new Date(app.education[0].end_date * 1000).toLocaleString() : "-"}</TableCell>
+                                <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800"> {app.education[0].end_date ? new Date(app.education[0].end_date * 1000).getFullYear() : "-"}</TableCell>
+                                <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800"> {}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
