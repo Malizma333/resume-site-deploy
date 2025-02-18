@@ -47,6 +47,7 @@ export default function ApplicationsPage() {
     const handleDownload = async (email: string) => {
         try {
             const response = await fetch(`/api/download?email=${encodeURIComponent(email)}`);
+            console.log("Hello World");
             if (response.ok) {
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
