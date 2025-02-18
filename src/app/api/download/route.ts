@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
-import { GridFSBucket, ObjectId } from "mongodb";
+import { GridFSBucket } from "mongodb";
 
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
