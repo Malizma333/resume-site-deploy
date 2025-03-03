@@ -12,6 +12,7 @@ interface Application {
         school_name: string;
         end_date: number | null;
     }[];
+    checkedIn?: boolean;
 }
 
 export default function ApplicationsPage() {
@@ -88,6 +89,14 @@ export default function ApplicationsPage() {
         return <div>Error: {error}</div>;
     }
 
+    let count = 0;
+
+    for (const appl of applications) {
+      if (appl.checkedIn) {
+        count += 1;
+      }
+    }
+
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <div className="overflow-x-auto bg-white shadow-lg rounded-lg border border-gray-200">
@@ -100,6 +109,7 @@ export default function ApplicationsPage() {
                             <TableHead className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase">University</TableHead>
                             <TableHead className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase">Grad Year</TableHead>
                             <TableHead className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase">Resume</TableHead>
+                            <TableHead className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase">Checked In<br></br>{count}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody className="bg-white divide-y divide-gray-200">
@@ -108,13 +118,14 @@ export default function ApplicationsPage() {
                                 <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{index + 1}</TableCell>
                                 <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{app.first_name + " " + app.last_name}</TableCell>
                                 <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{app.email}</TableCell>
-                                <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{app.education[0].school_name}</TableCell>
-                                <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{app.education[0].end_date ? new Date(app.education[0].end_date * 1000).getFullYear() : "-"}</TableCell>
+                                <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{app.education && app.education[0].school_name}</TableCell>
+                                <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{app.education && app.education[0].end_date ? new Date(app.education[0].end_date * 1000).getFullYear() : "-"}</TableCell>
                                 <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                     <button onClick={() => handleDownload(app.email)} className="text-blue-600 hover:text-blue-900">
                                         Download Resume
                                     </button>
                                 </TableCell>
+                                <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{app.checkedIn ? "Y" : "N"}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
